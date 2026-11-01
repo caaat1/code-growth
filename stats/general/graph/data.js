@@ -4,7 +4,7 @@ const raw = [
   {
     t: '11/01 14:16',
     commit:
-      "ff85ba8 Read the config from JSON, and do the hook's step in a tested command",
+      "1b76b39 Read the config from JSON, and do the hook's step in a tested command",
     withTest: {
       files: 121,
       entries: 195,
@@ -32,7 +32,7 @@ const raw = [
   },
   {
     t: '11/01 14:19',
-    commit: '1d0f2b6 Add the license, the README and CI',
+    commit: '7832b92 Add the license, the README and CI',
     withTest: {
       files: 122,
       entries: 196,
@@ -61,7 +61,7 @@ const raw = [
   {
     t: '11/01 14:24',
     commit:
-      'ab0e632 Hold what installing it found: the Node floor, snapshot style, install scripts',
+      '10f5cc4 Hold what installing it found: the Node floor, snapshot style, install scripts',
     withTest: {
       files: 122,
       entries: 196,
@@ -89,7 +89,8 @@ const raw = [
   },
   {
     t: '11/01 14:30',
-    commit: null,
+    commit:
+      'a35ab74 Test the commit lookup, a move out of scope and the styled render',
     withTest: {
       files: 123,
       entries: 197,
@@ -101,6 +102,35 @@ const raw = [
       bpe: 562,
       lpf: 27.3,
       lpe: 17,
+    },
+    withoutTest: {
+      files: 89,
+      entries: 163,
+      lines: 1674,
+      bytes: 53497,
+      bytesAllocated: 364544,
+      bpf: 601,
+      bpl: 32,
+      bpe: 328,
+      lpf: 18.8,
+      lpe: 10.3,
+    },
+  },
+  {
+    t: '11/01 14:34',
+    commit:
+      "bad0e7d Cover the Recycle Bin's route through drop, and tidy for going public",
+    withTest: {
+      files: 123,
+      entries: 197,
+      lines: 3371,
+      bytes: 111464,
+      bytesAllocated: 516096,
+      bpf: 906,
+      bpl: 33.1,
+      bpe: 566,
+      lpf: 27.4,
+      lpe: 17.1,
     },
     withoutTest: {
       files: 89,

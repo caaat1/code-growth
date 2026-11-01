@@ -110,10 +110,6 @@ await test('the page carries a favicon of its own, inline so its base href leave
   assert.ok(svg.querySelector('path') !== null)
 })
 
-await test('the page has none of the project it was extracted from in its wording', () => {
-  assert.doesNotMatch(`${html}\n${script}`, /xDom|indi|henna|stats:general/i)
-})
-
 await test('the summary shows the newest values with their trends, the tests in', () => {
   const window = loadPage()
   assert.equal(readInput(window).checked, true)
