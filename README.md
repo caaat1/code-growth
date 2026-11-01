@@ -85,7 +85,7 @@ await renderStats(stats)
 
 ## Code layout
 
-The source follows its author's path grammar, which makes every name derivable from where it sits, and [a test](test/name.test.ts) holds it to that:
+The source follows the path grammar of its author, Konstantin Golov, which makes every name derivable from where it sits, and [a test](test/name.test.ts) holds it to that:
 
 - Every folder and file below `src/` gives a word to the name, from the general to the specific: `src/snapshot/file.ts` is `SnapshotFile`.
 - A function leads with its verb, the file's own name: `src/total/subtract.ts` is `subtractTotal`.
@@ -96,4 +96,4 @@ The package's exports hide all of this from anyone only using it.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) © Konstantin Golov
