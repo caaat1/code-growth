@@ -3,7 +3,8 @@ const scope = 'src'
 const raw = [
   {
     t: '11/01 14:16',
-    commit: null,
+    commit:
+      "ff85ba8 Read the config from JSON, and do the hook's step in a tested command",
     withTest: {
       files: 121,
       entries: 195,
@@ -27,6 +28,34 @@ const raw = [
       bpe: 327,
       lpf: 18.8,
       lpe: 10.3,
+    },
+  },
+  {
+    t: '11/01 14:19',
+    commit: null,
+    withTest: {
+      files: 122,
+      entries: 196,
+      lines: 3246,
+      bytes: 106855,
+      bytesAllocated: 512000,
+      bpf: 876,
+      bpl: 32.9,
+      bpe: 545,
+      lpf: 26.6,
+      lpe: 16.6,
+    },
+    withoutTest: {
+      files: 89,
+      entries: 163,
+      lines: 1668,
+      bytes: 53304,
+      bytesAllocated: 364544,
+      bpf: 599,
+      bpl: 32,
+      bpe: 327,
+      lpf: 18.7,
+      lpe: 10.2,
     },
   },
 ]

@@ -6,9 +6,6 @@ import { mock, test } from 'node:test'
 import { createDir } from '../../test/helper/dir/create.js'
 import { createGitRepo } from '../../test/helper/git/repo/create.js'
 import { runGit } from '../git/run.js'
-import { collectStats } from '../stats/collect.js'
-import { readStats } from '../stats/read.js'
-import { renderStats } from '../stats/render.js'
 
 import { runCli } from './run.js'
 
@@ -99,32 +96,6 @@ await test('a project with nothing to measure exits 1 with why', async () => {
   const { code, line } = await runCapturing(['collect'], rootDir)
   assert.equal(code, 1)
   assert.ok((line[0] ?? '').startsWith('No files match include'))
-})
-
-await test('drop takes a snapshot out, re-renders and stages the result', async () => {
-  const rootDir = createGitRepo({ 'package.json': '{}', 'src/a.ts': 'x\n' })
-  const stats = readStats(rootDir)
-  collectStats(stats, new Date('2026-09-27T15:12:31Z'))
-  collectStats(stats, new Date('2026-09-28T15:12:31Z'))
-  await renderStats(stats)
-  const dataDir = join(rootDir, 'stats/general/data')
-  const [first, second] = readdirSync(dataDir)
-  assert.ok(first !== undefined && second !== undefined)
-  runGit(rootDir, 'add', '--', 'stats', 'src', 'package.json')
-  runGit(rootDir, 'commit', '--quiet', '-m', 'Add the stats')
-
-  const { code } = await runCapturing(['drop', first], rootDir)
-
-  assert.equal(code, 0)
-  assert.deepEqual(readdirSync(dataDir), [second])
-  assert.deepEqual(
-    (await runCapturing(['check'], rootDir)).code,
-    0,
-    'the render saw the snapshot gone'
-  )
-  const staged = runGit(rootDir, 'diff', '--cached', '--name-only')
-  assert.ok(staged.includes(first), staged)
-  assert.ok(staged.includes('stats/general/graph/data.js'), staged)
 })
 
 await test('pre-commit prints what it did and never blocks, whatever goes wrong', async () => {

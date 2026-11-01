@@ -16,19 +16,15 @@ import { renderStats } from './render.js'
  */
 export async function dropStats(
   stats: Stats,
-  name: readonly string[]
+  name: readonly string[],
+  recycle: (path: string) => void = process.platform === 'win32'
+    ? recycleFile
+    : (each): void => {
+        removeGitFile(stats.rootDir, each)
+      }
 ): Promise<void> {
   const { path, rootDir } = stats
-  const dropped = dropSnapshot({
-    dataDir: path.data,
-    name,
-    recycle:
-      process.platform === 'win32'
-        ? recycleFile
-        : (each): void => {
-            removeGitFile(rootDir, each)
-          },
-  })
+  const dropped = dropSnapshot({ dataDir: path.data, name, recycle })
   runGit(
     rootDir,
     'rm',

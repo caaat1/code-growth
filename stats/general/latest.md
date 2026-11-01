@@ -2,30 +2,30 @@
 
 ## files · entries · lines · bytes
 
-| unit                           | with tests | without tests |
-| ------------------------------ | ---------: | ------------: |
-| byte                           |    106,442 |        53,299 |
-| byte allocated (nominal 4 KiB) |    507,904 |       364,544 |
-| line                           |      3,234 |         1,672 |
-| file                           |        121 |            89 |
-| entry                          |        195 |           163 |
+| unit                           | with tests |    trend | without tests | trend |
+| ------------------------------ | ---------: | -------: | ------------: | ----: |
+| byte                           |    106,855 |   +413 ▲ |        53,304 |  +5 ▲ |
+| byte allocated (nominal 4 KiB) |    512,000 | +4,096 ▲ |       364,544 |       |
+| line                           |      3,246 |    +12 ▲ |         1,668 |  −4 ▼ |
+| file                           |        122 |     +1 ▲ |            89 |       |
+| entry                          |        196 |     +1 ▲ |           163 |       |
 
 ## bytes / file
 
-| ratio        | with tests | without tests |
-| ------------ | ---------: | ------------: |
-| byte / file  |        880 |           599 |
-| byte / entry |        546 |           327 |
+| ratio        | with tests | trend | without tests | trend |
+| ------------ | ---------: | ----: | ------------: | ----: |
+| byte / file  |        876 |  −4 ▼ |           599 |       |
+| byte / entry |        545 |  −1 ▼ |           327 |       |
 
 ## lines / file
 
-| ratio        | with tests | without tests |
-| ------------ | ---------: | ------------: |
-| line / file  |       26.7 |          18.8 |
-| line / entry |       16.6 |          10.3 |
+| ratio        | with tests |  trend | without tests |  trend |
+| ------------ | ---------: | -----: | ------------: | -----: |
+| line / file  |       26.6 | −0.1 ▼ |          18.7 | −0.1 ▼ |
+| line / entry |       16.6 |        |          10.2 | −0.1 ▼ |
 
 ## bytes / line
 
-| ratio       | with tests | without tests |
-| ----------- | ---------: | ------------: |
-| byte / line |       32.9 |          31.9 |
+| ratio       | with tests | trend | without tests |  trend |
+| ----------- | ---------: | ----: | ------------: | -----: |
+| byte / line |       32.9 |       |          32.0 | +0.1 ▲ |

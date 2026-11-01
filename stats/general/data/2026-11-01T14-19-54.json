@@ -1,0 +1,16 @@
+{
+  "test": {
+    "byte": 53551,
+    "byteAllocated": 147456,
+    "directory": 0,
+    "file": 33,
+    "line": 1578
+  },
+  "total": {
+    "byte": 106855,
+    "byteAllocated": 512000,
+    "directory": 74,
+    "file": 122,
+    "line": 3246
+  }
+}
