@@ -13,7 +13,7 @@ Bytes, lines, files and entries (files plus folders), and the ratios between the
 It needs Node 22.17 or later and Git.
 
 ```sh
-npm install --save-dev github:caaat1/code-growth
+npm install --save-dev github:caaat1/code-growth#v0.1.0
 npx code-growth
 ```
 
