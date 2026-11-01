@@ -17,7 +17,7 @@ npm install --save-dev github:caaat1/code-growth
 npx code-growth
 ```
 
-npm notes that the package has a `prepare` script: that's the tool building itself on install, and `npm approve-scripts code-growth` settles it.
+npm notes that the package has a `prepare` script when it installs. That's the tool building itself, and there's nothing to do about it.
 
 That takes a first snapshot of `src/` and prints the path of the page to open. Then add the hook, so each commit records itself. With [husky](https://typicode.github.io/husky/), add this line to `.husky/pre-commit`; without it, put the line in `.git/hooks/pre-commit`:
 

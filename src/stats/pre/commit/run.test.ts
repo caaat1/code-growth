@@ -117,6 +117,15 @@ await test('a staged deletion of a measured file takes a snapshot', async () => 
   )
 })
 
+await test('moving a file out of what is measured takes a snapshot', async () => {
+  const rootDir = await createProjectRendered()
+  runGit(rootDir, 'mv', '--', 'src/a.ts', 'moved.ts')
+  assert.equal(
+    await runStatsPreCommit(readStats(rootDir), later),
+    'Stats snapshot taken and staged.'
+  )
+})
+
 await test('a commit staging nothing measured takes no snapshot', async () => {
   const rootDir = createProject()
   edit(rootDir, 'README.md')

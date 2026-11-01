@@ -60,7 +60,8 @@ const raw = [
   },
   {
     t: '11/01 14:24',
-    commit: null,
+    commit:
+      'ab0e632 Hold what installing it found: the Node floor, snapshot style, install scripts',
     withTest: {
       files: 122,
       entries: 196,
@@ -72,6 +73,34 @@ const raw = [
       bpe: 550,
       lpf: 26.8,
       lpe: 16.7,
+    },
+    withoutTest: {
+      files: 89,
+      entries: 163,
+      lines: 1674,
+      bytes: 53497,
+      bytesAllocated: 364544,
+      bpf: 601,
+      bpl: 32,
+      bpe: 328,
+      lpf: 18.8,
+      lpe: 10.3,
+    },
+  },
+  {
+    t: '11/01 14:30',
+    commit: null,
+    withTest: {
+      files: 123,
+      entries: 197,
+      lines: 3352,
+      bytes: 110723,
+      bytesAllocated: 516096,
+      bpf: 900,
+      bpl: 33,
+      bpe: 562,
+      lpf: 27.3,
+      lpe: 17,
     },
     withoutTest: {
       files: 89,
