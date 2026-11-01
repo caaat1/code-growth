@@ -4,9 +4,10 @@ Track how a codebase grows: one size snapshot per commit, kept in the repo, with
 
 ## Commands
 
+- `npm run hooks` — once after cloning, to turn on the Git hooks
 - `npm run validate` — type-check + lint + format check + tests; must pass before push
 - `npm test` — the tests alone (they sit beside their entities, `x.test.ts`; helpers in `test/helper/`)
-- `npm run build` — `dist/`, what ships with `page/` and `schema/`
+- `npm run build` — `dist/`, what ships with `page/` and `schema/`; `npm pack` builds it itself
 
 ## Conventions
 

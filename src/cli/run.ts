@@ -18,10 +18,10 @@ function readErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
 
-function collect(stats: Stats): void {
+async function collect(stats: Stats): Promise<void> {
   reportMeasure(
     stats.project,
-    collectStats(stats, new Date()),
+    await collectStats(stats, new Date()),
     scanByteOnDisk(stats.config, stats.rootDir)
   )
 }
@@ -86,7 +86,7 @@ async function run(args: readonly string[], cwd: string): Promise<number> {
     await dropStats(stats, snapshot)
   }
   if (command === 'collect' || command === 'run') {
-    collect(stats)
+    await collect(stats)
   }
   if (command === 'render' || command === 'run') {
     await render(stats)

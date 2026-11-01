@@ -32,7 +32,7 @@ const raw = [
   },
   {
     t: '11/01 14:19',
-    commit: null,
+    commit: '1d0f2b6 Add the license, the README and CI',
     withTest: {
       files: 122,
       entries: 196,
@@ -56,6 +56,34 @@ const raw = [
       bpe: 327,
       lpf: 18.7,
       lpe: 10.2,
+    },
+  },
+  {
+    t: '11/01 14:24',
+    commit: null,
+    withTest: {
+      files: 122,
+      entries: 196,
+      lines: 3272,
+      bytes: 107759,
+      bytesAllocated: 512000,
+      bpf: 883,
+      bpl: 32.9,
+      bpe: 550,
+      lpf: 26.8,
+      lpe: 16.7,
+    },
+    withoutTest: {
+      files: 89,
+      entries: 163,
+      lines: 1674,
+      bytes: 53497,
+      bytesAllocated: 364544,
+      bpf: 601,
+      bpl: 32,
+      bpe: 328,
+      lpf: 18.8,
+      lpe: 10.3,
     },
   },
 ]

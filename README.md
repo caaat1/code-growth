@@ -10,7 +10,7 @@ Bytes, lines, files and entries (files plus folders), and the ratios between the
 
 ## Set up
 
-It needs Node 22.14 or later and Git.
+It needs Node 22.17 or later and Git.
 
 ```sh
 npm install --save-dev github:caaat1/code-growth
@@ -77,7 +77,7 @@ If your project has Prettier, generated files follow your config, so regeneratin
 import { collectStats, readStats, renderStats } from 'code-growth'
 
 const stats = readStats(process.cwd())
-collectStats(stats, new Date())
+await collectStats(stats, new Date())
 await renderStats(stats)
 ```
 

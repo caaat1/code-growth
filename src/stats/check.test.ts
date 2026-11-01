@@ -17,7 +17,7 @@ async function createRenderedStats(): Promise<Stats> {
   const stats = readStats(
     createDir({ 'package.json': '{}', 'src/a.ts': 'x\ny\n' })
   )
-  collectStats(stats, date)
+  await collectStats(stats, date)
   await renderStats(stats)
   return stats
 }
@@ -32,7 +32,7 @@ await test('checkStats finds nothing right after a render, and nothing without s
 
 await test('checkStats reports a snapshot the graph data lacks', async () => {
   const stats = await createRenderedStats()
-  collectStats(stats, new Date('2026-09-28T15:12:31Z'))
+  await collectStats(stats, new Date('2026-09-28T15:12:31Z'))
   assert.ok(
     (await checkStats(stats)).includes(
       'graph/data.js holds 1 snapshot(s), data/ 2'

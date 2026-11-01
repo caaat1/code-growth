@@ -33,7 +33,7 @@
     "typescript": "6.0.3"
   },
   "engines": {
-    "node": ">=22.14.0"
+    "node": ">=22.17.0"
   },
   "exports": {
     ".": {
@@ -91,6 +91,7 @@
     "code-growth": "tsx --tsconfig tsconfig.test.json src/cli.ts",
     "dist:clean": "rimraf dist",
     "format:check": "prettier --check .",
+    "hooks": "husky",
     "lint": "eslint --cache --format=stylish --cache-location .eslintcache --no-warn-ignored --max-warnings 0",
     "lint:page": "npm run lint -- ./page",
     "lint:self": "npm run lint -- ./eslint.config.mjs \"./eslint.config/**/*.mjs\"",
@@ -101,7 +102,7 @@
     "lint:src:no-cache": "npm run lint:src -- --no-cache",
     "lint:test": "npm run lint -- ./test",
     "lint:test:fix": "npm run lint:test -- --fix",
-    "prepare": "husky && npm run build",
+    "prepack": "npm run build:clean",
     "test": "tsx --tsconfig tsconfig.test.json --test \"src/**/*.test.ts\" \"test/**/*.test.ts\"",
     "type-check": "tsc -p tsconfig.src.json --noEmit && tsc -p tsconfig.test.json",
     "validate": "npm run validate:static && npm run test",

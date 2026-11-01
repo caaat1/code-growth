@@ -4,17 +4,20 @@ import { join } from 'node:path'
 import { test } from 'node:test'
 
 import { createDir } from '../../test/helper/dir/create.js'
+import { findProjectRootDir } from '../project/root/dir/find.js'
 
 import { collectSnapshot } from './collect.js'
 
-await test('collectSnapshot writes the snapshot it returns, its tallies only, into a data dir it creates', () => {
+const date = new Date('2026-09-27T15:12:31Z')
+
+await test('collectSnapshot writes the snapshot it returns, its tallies only, into a data dir it creates', async () => {
   const rootDir = createDir({ 'src/a.test.ts': 'x\n', 'src/a.ts': 'x\ny\n' })
   const dataDir = join(rootDir, 'data')
-  const measure = collectSnapshot(
+  const measure = await collectSnapshot(
     { include: ['src'], test: ['**/*.test.ts'] },
     rootDir,
     dataDir,
-    new Date('2026-09-27T15:12:31Z')
+    date
   )
   assert.deepEqual(measure, {
     test: { byte: 2, byteAllocated: 4096, directory: 0, file: 1, line: 1 },
@@ -27,16 +30,33 @@ await test('collectSnapshot writes the snapshot it returns, its tallies only, in
   assert.deepEqual(Object.keys(written as object), ['test', 'total'])
 })
 
-await test('collectSnapshot refuses a config that matches no files', () => {
+await test('collectSnapshot refuses a config that matches no files', async () => {
   const rootDir = createDir({ 'src/a.ts': 'x\n' })
-  assert.throws(
-    () =>
-      collectSnapshot(
-        { include: ['missing'] },
-        rootDir,
-        join(rootDir, 'data'),
-        new Date()
-      ),
+  await assert.rejects(
+    collectSnapshot(
+      { include: ['missing'] },
+      rootDir,
+      join(rootDir, 'data'),
+      new Date()
+    ),
     /No files match include \["missing"\]/
+  )
+})
+
+await test('collectSnapshot writes in the style of a project with Prettier', async () => {
+  // Inside this package, whose Prettier the temporary project then resolves.
+  const rootDir = createDir(
+    {
+      '.prettierrc': '{ "tabWidth": 4 }',
+      'package.json': '{}',
+      'src/a.ts': 'x\n',
+    },
+    findProjectRootDir(import.meta.dirname)
+  )
+  const dataDir = join(rootDir, 'data')
+  await collectSnapshot({ include: ['src'] }, rootDir, dataDir, date)
+  assert.match(
+    readFileSync(join(dataDir, '2026-09-27T15-12-31.json'), 'utf-8'),
+    /^ {4}"test": \{$/m
   )
 })

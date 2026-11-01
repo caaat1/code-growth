@@ -60,7 +60,7 @@ export async function runStatsPreCommit(
     )
   }
   if (staged.some((each): boolean => isConfigMeasuredPath(config, each))) {
-    collectStats(stats, date)
+    await collectStats(stats, date)
     await renderStats(stats)
     stage(join(path.data, createSnapshotFilename(date)))
     return 'Stats snapshot taken and staged.'

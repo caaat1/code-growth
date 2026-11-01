@@ -34,7 +34,7 @@ function createProject(config = '{}'): string {
 async function createProjectRendered(): Promise<string> {
   const rootDir = createProject()
   const stats = readStats(rootDir)
-  collectStats(stats, date)
+  await collectStats(stats, date)
   await renderStats(stats)
   runGit(rootDir, 'add', '--all')
   runGit(rootDir, 'commit', '--quiet', '-m', 'Add the stats')
@@ -133,7 +133,7 @@ await test('a commit staging nothing measured takes no snapshot', async () => {
 await test('a commit only removing a snapshot re-renders from what is left', async () => {
   const rootDir = await createProjectRendered()
   const stats = readStats(rootDir)
-  collectStats(stats, later)
+  await collectStats(stats, later)
   await renderStats(stats)
   runGit(rootDir, 'add', '--all')
   runGit(rootDir, 'commit', '--quiet', '-m', 'Second snapshot')

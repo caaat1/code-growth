@@ -16,8 +16,8 @@ import { renderStats } from './render.js'
 await test('dropStats takes a snapshot out, re-renders and stages the result', async () => {
   const rootDir = createGitRepo({ 'package.json': '{}', 'src/a.ts': 'x\n' })
   const stats = readStats(rootDir)
-  collectStats(stats, new Date('2026-09-27T15:12:31Z'))
-  collectStats(stats, new Date('2026-09-28T15:12:31Z'))
+  await collectStats(stats, new Date('2026-09-27T15:12:31Z'))
+  await collectStats(stats, new Date('2026-09-28T15:12:31Z'))
   await renderStats(stats)
   runGit(rootDir, 'add', '--all')
   runGit(rootDir, 'commit', '--quiet', '-m', 'Add the stats')

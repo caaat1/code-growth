@@ -27,7 +27,7 @@ await test('renderStats writes nothing without snapshots', async () => {
 await test('renderStats writes latest.md, the graph data and the page into the project, titled by its folder', async () => {
   const rootDir = createProject()
   const stats = readStats(rootDir)
-  collectStats(stats, date)
+  await collectStats(stats, date)
   assert.equal(await renderStats(stats), 1)
   const graphData = readFileSync(stats.path.graphData, 'utf-8')
   assert.equal(readGraphDataProject(graphData), basename(rootDir))
