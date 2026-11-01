@@ -1,6 +1,6 @@
 import { basename, resolve } from 'node:path'
 
-import { configDefault } from '../config/default.js'
+import { readConfig } from '../config/read.js'
 import { findProjectRootDir } from '../project/root/dir/find.js'
 import type { Stats } from '../stats.js'
 
@@ -13,9 +13,10 @@ import { createStatsPath } from './path/create.js'
  */
 export function readStats(cwd: string, dir: string = statsDirDefault): Stats {
   const rootDir = findProjectRootDir(cwd)
+  const path = createStatsPath(resolve(rootDir, dir))
   return {
-    config: configDefault,
-    path: createStatsPath(resolve(rootDir, dir)),
+    config: readConfig(path.config),
+    path,
     project: basename(rootDir),
     rootDir,
   }

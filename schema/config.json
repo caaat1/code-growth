@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "code-growth config",
+  "description": "What code-growth measures. Every key is optional; patterns are relative to the project root.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "exclude": {
+      "description": "Glob patterns to leave out of include. A bare folder takes its contents with it. Dotfiles and dot-folders are always left out.",
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "include": {
+      "description": "Glob patterns to measure. A bare folder stands for everything inside it.",
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["src"]
+    },
+    "test": {
+      "description": "Glob patterns that pick the tests among what's measured, so the page can leave them out. A folder takes its contents with it.",
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["**/*.spec.*", "**/*.test.*"]
+    }
+  }
+}

@@ -127,6 +127,37 @@ await test('drop takes a snapshot out, re-renders and stages the result', async 
   assert.ok(staged.includes('stats/general/graph/data.js'), staged)
 })
 
+await test('pre-commit prints what it did and never blocks, whatever goes wrong', async () => {
+  const rootDir = createGitRepo({ 'package.json': '{}', 'src/a.ts': 'x\n' })
+  runGit(rootDir, 'add', '--', 'src/a.ts')
+  const { code, line } = await runCapturing(['pre-commit'], rootDir)
+  assert.equal(code, 0)
+  assert.deepEqual(line, ['Stats snapshot taken and staged.'])
+
+  const notRepo = createProject()
+  const hiccup = await runCapturing(['pre-commit'], notRepo)
+  assert.equal(hiccup.code, 0)
+  assert.ok((hiccup.line[0] ?? '').startsWith('Stats skipped: '))
+
+  const badConfig = createDir({
+    'package.json': '{}',
+    'stats/general/config.json': '{ "nonsense": [] }',
+  })
+  const bad = await runCapturing(['pre-commit'], badConfig)
+  assert.equal(bad.code, 0)
+  assert.match(bad.line[0] ?? '', /unknown key "nonsense"/)
+})
+
+await test('a bad config stops every other command, exit 1 with why', async () => {
+  const rootDir = createDir({
+    'package.json': '{}',
+    'stats/general/config.json': '{ "nonsense": [] }',
+  })
+  const { code, line } = await runCapturing([], rootDir)
+  assert.equal(code, 1)
+  assert.match(line[0] ?? '', /unknown key "nonsense"/)
+})
+
 await test('drop refuses an unknown snapshot', async () => {
   const rootDir = createGitRepo({ 'package.json': '{}', 'src/a.ts': 'x\n' })
   const { code, line } = await runCapturing(

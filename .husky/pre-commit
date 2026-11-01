@@ -1,3 +1,7 @@
 #!/usr/bin/env sh
 echo "Running pre-commit checks..."
 npx lint-staged
+
+# This package's own stats, taken with itself from source. A consuming project
+# runs the same step as: npx --no-install code-growth pre-commit || true
+npm run --silent code-growth -- pre-commit

@@ -6,12 +6,17 @@ import { readPackageVersion } from '../package/version/read.js'
 import { checkStats } from '../stats/check.js'
 import { collectStats } from '../stats/collect.js'
 import { dropStats } from '../stats/drop.js'
+import { runStatsPreCommit } from '../stats/pre/commit/run.js'
 import { readStats } from '../stats/read.js'
 import { renderStats } from '../stats/render.js'
 import type { Stats } from '../stats.js'
 
 import { parseCliArgument } from './argument/parse.js'
 import { cliUsage } from './usage.js'
+
+function readErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
 
 function collect(stats: Stats): void {
   reportMeasure(
@@ -47,6 +52,19 @@ async function check(stats: Stats): Promise<number> {
   return 1
 }
 
+// Whatever goes wrong here, a stats hiccup must never block a commit.
+async function preCommit(
+  cwd: string,
+  dir: string | undefined
+): Promise<number> {
+  try {
+    console.info(await runStatsPreCommit(readStats(cwd, dir), new Date()))
+  } catch (error) {
+    console.warn(`Stats skipped: ${readErrorMessage(error)}`)
+  }
+  return 0
+}
+
 async function run(args: readonly string[], cwd: string): Promise<number> {
   const { command, dir, snapshot } = parseCliArgument(args)
   if (command === 'help') {
@@ -56,6 +74,9 @@ async function run(args: readonly string[], cwd: string): Promise<number> {
   if (command === 'version') {
     console.info(readPackageVersion())
     return 0
+  }
+  if (command === 'pre-commit') {
+    return preCommit(cwd, dir)
   }
   const stats = readStats(cwd, dir)
   if (command === 'check') {
@@ -81,7 +102,7 @@ export async function runCli(
   try {
     return await run(args, cwd)
   } catch (error) {
-    console.error(error instanceof Error ? error.message : String(error))
+    console.error(readErrorMessage(error))
     return 1
   }
 }

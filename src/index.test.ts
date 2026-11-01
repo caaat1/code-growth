@@ -11,6 +11,7 @@ await test('the package exports its public functions and nothing else', () => {
     'readSnapshotFile',
     'readStats',
     'renderStats',
+    'runStatsPreCommit',
     'scanMeasure',
   ])
 })

@@ -88,9 +88,11 @@
   "scripts": {
     "build": "tsc -p tsconfig.src.json",
     "build:clean": "npm run dist:clean && npm run build",
+    "code-growth": "tsx --tsconfig tsconfig.test.json src/cli.ts",
     "dist:clean": "rimraf dist",
     "format:check": "prettier --check .",
     "lint": "eslint --cache --format=stylish --cache-location .eslintcache --no-warn-ignored --max-warnings 0",
+    "lint:page": "npm run lint -- ./page",
     "lint:self": "npm run lint -- ./eslint.config.mjs \"./eslint.config/**/*.mjs\"",
     "lint:self:fix": "npm run lint:self -- --fix",
     "lint:src": "npm run lint -- ./src",
@@ -103,9 +105,9 @@
     "test": "tsx --tsconfig tsconfig.test.json --test \"src/**/*.test.ts\" \"test/**/*.test.ts\"",
     "type-check": "tsc -p tsconfig.src.json --noEmit && tsc -p tsconfig.test.json",
     "validate": "npm run validate:static && npm run test",
-    "validate:lint": "npm run lint:src && npm run lint:test",
+    "validate:lint": "npm run lint:src && npm run lint:test && npm run lint:page",
     "validate:lint:fix": "npm run lint:src:fix && npm run lint:test:fix",
-    "validate:static": "npm run type-check && npm run validate:lint && npm run format:check"
+    "validate:static": "npm run type-check && npm run validate:lint && npm run format:check && npm run code-growth -- check"
   },
   "type": "module",
   "types": "./dist/index.d.ts",
