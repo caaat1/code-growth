@@ -1,0 +1,22 @@
+{
+  // Source of truth for workbench.colorCustomizations (vsc-palette skill).
+  // Edit here (or via the skill), then project; hex in settings.json is generated.
+  "editorGroupHeader.border": "hwb(85 7.44% 84.31%)",
+  "editorGroupHeader.noTabsBackground": "hwb(85 7.44% 84.31%)",
+  "editorGroupHeader.tabsBackground": "hwb(85 13.59% 73.33%)",
+  "editorGroupHeader.tabsBorder": "hwb(85 22.47% 55.38%)",
+  "sideBar.background": "hwb(85 9.45% 79.87%)",
+  "statusBar.background": "hwb(85 13.72% 69.45%)",
+  "statusBar.border": "hwb(85 24.92% 55.29%)",
+  "statusBar.debuggingBackground": "hwb(265 27.06% 27.45%)",
+  "statusBar.foreground": "hwb(0 100% 0%)",
+  "statusBar.noFolderBackground": "hwb(85 18.3% 60.92%)",
+  "tab.activeBackground": "hwb(85 19.61% 56.84%)",
+  "tab.unfocusedActiveBackground": "hwb(85 19.73% 65.1%)",
+  "tab.unfocusedInactiveBackground": "hwb(85 10.03% 80.78%)",
+  "titleBar.activeBackground": "hwb(85 19.61% 56.84%)",
+  "titleBar.activeForeground": "hwb(0 100% 0%)",
+  "titleBar.border": "hwb(85 24.92% 55.29%)",
+  "titleBar.inactiveBackground": "hwb(85 12.76% 74.18%)",
+  "titleBar.inactiveForeground": "hwb(85 90.35% 7.21%)"
+}

@@ -1,0 +1,13 @@
+# Normalize line endings, and keep LF on every checkout: Prettier checks for
+# LF, and a Windows runner's default autocrlf would otherwise check out CRLF.
+* text=auto eol=lf
+
+# Declare files that will always have CRLF line endings on checkout
+*.bat text eol=crlf
+
+# Denote all files that are truly binary and should not be modified
+*.gif binary
+*.ico binary
+*.jpg binary
+*.png binary
+*.zip binary

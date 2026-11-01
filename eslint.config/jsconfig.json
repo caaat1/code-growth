@@ -1,0 +1,27 @@
+{
+  // Boundary marker: gives everything under eslint.config/ its own project,
+  // separate from the root tsconfig.json (whose `include` doesn't cover this
+  // tree). This is what lets the editor's language service — and, via
+  // projectService's own nearest-config discovery, @typescript-eslint/parser
+  // — see across these files at all (module resolution, auto-import, etc.).
+  //
+  // xDom extends a shared `tsconfig/tsconfig.base.json` here (it has multiple
+  // sibling boundary-marker configs reusing the same base). This project only
+  // has this one, so the settings are inlined rather than adding that extra
+  // layer for a single consumer.
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    // editor/lint use only, never a build: without this, allowJs + no outDir
+    // makes tsserver try to emit each .mjs back onto itself
+    "noEmit": true,
+    "noUncheckedIndexedAccess": true,
+    "strict": true,
+    "target": "ES2022",
+    "types": ["node"]
+  }
+}

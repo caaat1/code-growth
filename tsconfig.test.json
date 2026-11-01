@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.src.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": "."
+  },
+  // The package's scratch excludes, without its exclusion of the tests.
+  "exclude": [
+    "**/&*",
+    "**/-*",
+    "**/.temp",
+    "**/.tmp",
+    "**/scratch",
+    "**/temp",
+    "**/tmp"
+  ],
+  "include": ["src", "test"]
+}

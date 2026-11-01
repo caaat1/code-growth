@@ -1,0 +1,45 @@
+# ===== SCRATCH CONVENTIONS =====
+# Keep aligned across git/tsconfig/eslint/prettier — one intent, per-tool
+# dialects. Temp names match the vscode-icons extension's temp-folder set.
+&*
+*.temp
+*.tmp
+-*
+.temp/
+.tmp/
+sandbox/
+scratch/
+temp/
+tmp/
+
+# ===== DEPENDENCIES =====
+node_modules/
+
+# ===== BUILD & CACHE =====
+*.tgz
+*.tsbuildinfo
+.cache/
+.eslintcache
+/coverage/
+/dist/
+
+# ===== LOGS =====
+*.log
+logs/
+
+# ===== TOOLING RUNTIME =====
+.claude/settings.local.json
+/.husky/_/
+
+# ===== OS DROPPINGS =====
+# Windows
+Desktop.ini
+Thumbs.db
+ehthumbs.db
+# macOS
+.AppleDouble
+.DS_Store
+.LSOverride
+.Spotlight-V100
+.Trashes
+._*

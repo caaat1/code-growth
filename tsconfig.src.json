@@ -1,0 +1,64 @@
+{
+  "compilerOptions": {
+    // Type Checking
+
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+
+    // Modules
+
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "noUncheckedSideEffectImports": true,
+    "rootDir": "./src",
+    "types": ["node"],
+
+    // Emit
+
+    "declaration": true,
+    "newLine": "lf",
+    "noEmitOnError": true,
+    "outDir": "./dist",
+
+    // Interop Constraints
+
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": true,
+
+    // Language and Environment
+
+    "lib": ["ES2022"],
+    "moduleDetection": "force",
+    "target": "ES2022",
+
+    // Output Formatting
+
+    "noErrorTruncation": true,
+
+    // Completeness
+
+    "skipLibCheck": true
+  },
+  // Scratch names, aligned with .gitignore. The tests beside each entity
+  // belong to tsconfig.test.json, so they never reach dist/.
+  "exclude": [
+    "**/&*",
+    "**/*.test.ts",
+    "**/-*",
+    "**/.temp",
+    "**/.tmp",
+    "**/scratch",
+    "**/temp",
+    "**/tmp"
+  ],
+  "include": ["src"]
+}

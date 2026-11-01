@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+zero="0000000000000000000000000000000000000000"
+delete_only=true
+
+while read -r local_ref local_sha remote_ref remote_sha
+do
+  if [ "$local_sha" != "$zero" ]; then
+    delete_only=false
+  fi
+done
+
+if [ "$delete_only" = true ]; then
+  echo "Skipping pre-push checks: push only deletes remote ref(s)."
+  exit 0
+fi
+
+echo "🚀 Running pre-push/production checks..."
+npm run validate

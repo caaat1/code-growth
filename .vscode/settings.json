@@ -1,0 +1,23 @@
+{
+  // Projected from .vscode/settings/workbench.colorCustomizations.hwb.jsonc — edit there or via the vsc-palette skill
+  "workbench.colorCustomizations": {
+    "editorGroupHeader.border": "#1f2813ff",
+    "editorGroupHeader.noTabsBackground": "#1f2813ff",
+    "editorGroupHeader.tabsBackground": "#364423ff",
+    "editorGroupHeader.tabsBorder": "#5a7239ff",
+    "sideBar.background": "#283318ff",
+    "statusBar.background": "#3c4e23ff",
+    "statusBar.border": "#5d7240ff",
+    "statusBar.debuggingBackground": "#7545b9ff",
+    "statusBar.foreground": "#ffffffff",
+    "statusBar.noFolderBackground": "#4e642fff",
+    "tab.activeBackground": "#556e32ff",
+    "tab.unfocusedActiveBackground": "#495932ff",
+    "tab.unfocusedInactiveBackground": "#27311aff",
+    "titleBar.activeBackground": "#556e32ff",
+    "titleBar.activeForeground": "#ffffffff",
+    "titleBar.border": "#5d7240ff",
+    "titleBar.inactiveBackground": "#344221ff",
+    "titleBar.inactiveForeground": "#eaede6ff"
+  }
+}

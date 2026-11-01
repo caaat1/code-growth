@@ -1,0 +1,21 @@
+# Editor defaults for ALL files — including those Prettier ignores
+# (tsconfig*.json, .husky hooks, scratch). Where both apply, values mirror
+# .prettierrc (lf, 2-space indent); .gitattributes agrees (eol normalization,
+# *.bat crlf).
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Windows batch files require CRLF (matches .gitattributes)
+[*.bat]
+end_of_line = crlf
+
+# Two trailing spaces are a hard line break in Markdown
+[*.md]
+trim_trailing_whitespace = false

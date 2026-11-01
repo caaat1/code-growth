@@ -1,0 +1,15 @@
+---
+dictionaries: []
+dictionaryDefinitions: []
+ignorePaths:
+  - package-lock.json
+  - stats/general/data
+ignoreWords: []
+import: []
+version: '0.2'
+words:
+  - METACHARACTER
+  - ehthumbs
+  - eslintcache
+  - nodenext
+  - unmatch

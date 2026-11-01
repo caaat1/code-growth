@@ -1,0 +1,9 @@
+{
+  // A solution: the editor finds each file's program among the references,
+  // the package first, and a test (beside its entity, *.test.ts) with it.
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.src.json" },
+    { "path": "./tsconfig.test.json" }
+  ]
+}
