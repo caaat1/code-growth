@@ -102,7 +102,7 @@
     "lint:src:no-cache": "npm run lint:src -- --no-cache",
     "lint:test": "npm run lint -- ./test",
     "lint:test:fix": "npm run lint:test -- --fix",
-    "prepack": "npm run build:clean",
+    "prepare": "npm run build:clean",
     "test": "tsx --tsconfig tsconfig.test.json --test \"src/**/*.test.ts\" \"test/**/*.test.ts\"",
     "type-check": "tsc -p tsconfig.src.json --noEmit && tsc -p tsconfig.test.json",
     "validate": "npm run validate:static && npm run test",

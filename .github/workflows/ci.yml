@@ -23,5 +23,19 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm ci
       - run: npm run validate
-      - run: npm run build:clean
       - run: npm pack --dry-run
+      # A git install runs prepare and nothing else; without a build there it
+      # still succeeds, with no dist/. Linux only: a Windows path in a git+file
+      # URL is a matter for the shell, not for this package.
+      - name: Install from git, as a project would
+        if: runner.os == 'Linux'
+        working-directory: ${{ runner.temp }}
+        run: |
+          mkdir consumer
+          cd consumer
+          npm init -y
+          mkdir src
+          echo 'export const a = 1' > src/a.ts
+          npm install --save-dev "git+file://$GITHUB_WORKSPACE"
+          npx --no-install code-growth
+          npx --no-install code-growth check
