@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="./graph/" />
+    <meta charset="UTF-8" />
+    <title>xDom stats</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #1e1e1e;
+        color: #ccc;
+        font-family: monospace;
+        padding: 2.5em;
+      }
+      .top {
+        align-items: baseline;
+        display: flex;
+        justify-content: space-between;
+      }
+      h1 {
+        font-size: 1.1em;
+        color: #888;
+        margin-bottom: 1.5em;
+        letter-spacing: 0.1em;
+      }
+      .toggle {
+        color: #666;
+        cursor: pointer;
+        font-size: 0.8em;
+        letter-spacing: 0.08em;
+      }
+      .toggle input {
+        accent-color: #888;
+        color-scheme: dark;
+        cursor: pointer;
+        margin-right: 0.5em;
+        vertical-align: middle;
+      }
+      .toggle:has(input:disabled) {
+        color: #444;
+        cursor: default;
+      }
+      .toggle input:disabled {
+        cursor: default;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto auto;
+        gap: 2.5em;
+      }
+      .card {
+        background: #252526;
+        border: 1px solid #333;
+        border-radius: 0.25em;
+        padding: 0.75em;
+      }
+      .card.wide {
+        grid-column: 1 / -1;
+      }
+      h2 {
+        font-size: 0.8em;
+        color: #666;
+        letter-spacing: 0.08em;
+      }
+      .head {
+        align-items: baseline;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1.2em;
+      }
+      .trend {
+        color: #555;
+        cursor: default;
+        font-size: 0.8em;
+        letter-spacing: 0.08em;
+      }
+      .trend:hover {
+        color: #9cc8eb;
+      }
+      canvas {
+        display: block;
+      }
+      .summary {
+        align-items: flex-start;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.5em;
+        margin-top: 2.5em;
+      }
+      .summary h2 {
+        margin: 0;
+        padding-top: 1em;
+      }
+      .summary table {
+        border-collapse: collapse;
+        font-size: 0.9em;
+      }
+      .summary th {
+        color: #666;
+        font-size: 0.9em;
+        font-weight: normal;
+        letter-spacing: 0.08em;
+        padding: 0 0 0.75em 2em;
+        text-align: right;
+      }
+      .summary td {
+        padding: 0.2em 0 0.2em 2em;
+        text-align: right;
+      }
+      .summary th:first-child,
+      .summary td:first-child {
+        padding-left: 0;
+        text-align: left;
+      }
+      .summary .up {
+        color: #9cc8eb;
+      }
+      .summary .down {
+        color: #a3abd1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- data.js only changes when stats:general actually runs — showing the
+        current wall clock here would read as "current as of now" on every
+        reload, even the many where nothing new was collected. The last
+        data point's own timestamp is the honest answer to "how fresh is
+        this" — set below, once data.js has loaded. -->
+    <div class="top">
+      <h1>
+        <span id="project">xDom</span> / src stats — as of
+        <span id="asOf">…</span>
+      </h1>
+      <!-- The tests stay in the tally until unchecked; disabled while no
+          snapshot holds a tally of its tests. -->
+      <label class="toggle">
+        <input type="checkbox" id="test" checked />INCLUDE TESTS
+      </label>
+    </div>
+    <div class="grid">
+      <div class="card wide">
+        <div class="head">
+          <h2>FILES · ENTRIES · LINES · BYTES</h2>
+          <span class="trend">TREND</span>
+        </div>
+        <canvas id="c0" height="80"></canvas>
+      </div>
+      <div class="card">
+        <div class="head">
+          <h2>BYTES / FILE</h2>
+          <span class="trend">TREND</span>
+        </div>
+        <canvas id="c1" height="120"></canvas>
+      </div>
+      <div class="card">
+        <div class="head">
+          <h2>LINES / FILE</h2>
+          <span class="trend">TREND</span>
+        </div>
+        <canvas id="c2" height="120"></canvas>
+      </div>
+      <div class="card">
+        <div class="head">
+          <h2>BYTES / LINE</h2>
+          <span class="trend">TREND</span>
+        </div>
+        <canvas id="c3" height="120"></canvas>
+      </div>
+    </div>
+    <div class="summary">
+      <h2>LATEST</h2>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>UNIT</th>
+              <th>COUNT</th>
+              <th>TREND</th>
+            </tr>
+          </thead>
+          <tbody id="summaryCount"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>RATIO</th>
+              <th>VALUE</th>
+              <th>TREND</th>
+            </tr>
+          </thead>
+          <tbody id="summaryBytePerFile"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>RATIO</th>
+              <th>VALUE</th>
+              <th>TREND</th>
+            </tr>
+          </thead>
+          <tbody id="summaryLinePerFile"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>RATIO</th>
+              <th>VALUE</th>
+              <th>TREND</th>
+            </tr>
+          </thead>
+          <tbody id="summaryBytePerLine"></tbody>
+        </table>
+      </div>
+    </div>
+    <script src="data.js"></script>
+    <script>
+      document.getElementById('asOf').textContent =
+        raw.at(-1)?.t ?? 'no data yet'
+      document.getElementById('project').textContent = project
+      document.title = `${project} stats`
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -55,6 +55,7 @@ export const baseRules = {
   'no-implied-eval': 'off',
   'no-loss-of-precision': 'off',
   'no-magic-numbers': 'off',
+  'no-undef': 'off',
   'no-unused-vars': 'off',
 
   // Common rules. A short-lived CLI: its whole job is reporting to the
