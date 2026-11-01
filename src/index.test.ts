@@ -1,8 +1,16 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
-import { version } from './index.js'
+import * as codeGrowth from './index.js'
 
-await test('version names the first release', () => {
-  assert.equal(version, '0.1.0')
+await test('the package exports its public functions and nothing else', () => {
+  assert.deepEqual(Object.keys(codeGrowth).sort(), [
+    'checkStats',
+    'collectStats',
+    'dropStats',
+    'readSnapshotFile',
+    'readStats',
+    'renderStats',
+    'scanMeasure',
+  ])
 })

@@ -10,8 +10,8 @@ import { deriveEntityName } from './helper/entity/name/derive.js'
 const DECLARATION =
   /^export (?:async )?(const|function|interface|type) ([A-Za-z_$][\w$]*)/gm
 
-// The entry points name no entity of their own; script.ts is on its way out.
-const exemption = ['src/index.ts', 'src/script.ts']
+// The entry points name no entity of their own.
+const exemption = ['src/cli.ts', 'src/index.ts']
 
 const rootDir = findProjectRootDir(import.meta.dirname)
 const path = globSync('src/**/*.ts', { cwd: rootDir })

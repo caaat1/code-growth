@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process'
+import { runGit } from '../../git/run.js'
 
 import { snapshotCommitLogMarker } from './log/marker.js'
 import { parseSnapshotCommitLog } from './log/parse.js'
@@ -13,17 +13,14 @@ export function readSnapshotCommit(
 ): Map<string, string> {
   try {
     return parseSnapshotCommitLog(
-      execFileSync(
-        'git',
-        [
-          'log',
-          '--diff-filter=A',
-          '--name-only',
-          `--format=${snapshotCommitLogMarker}%h %s`,
-          '--',
-          dataDir,
-        ],
-        { cwd: rootDir, encoding: 'utf-8' }
+      runGit(
+        rootDir,
+        'log',
+        '--diff-filter=A',
+        '--name-only',
+        `--format=${snapshotCommitLogMarker}%h %s`,
+        '--',
+        dataDir
       )
     )
   } catch {

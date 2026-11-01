@@ -4,11 +4,12 @@ import { ratioDecimal } from '../ratio/decimal.js'
 import { readTotalAverage } from '../total/average/read.js'
 
 export function reportMeasure(
+  project: string,
   { test, total }: Measure,
   byteOnDisk: number
 ): void {
   const { byte, line } = readTotalAverage(total)
-  console.info(`xDom stat`)
+  console.info(`${project} stats`)
   console.info(
     `total
     byte ${formatNumber(total.byte)},

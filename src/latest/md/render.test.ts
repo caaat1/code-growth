@@ -41,9 +41,9 @@ function readMdTableCell(md: string, heading: string): string[][] {
 
 await test('renderLatestMd lays out one table per chart pane', () => {
   assert.equal(
-    renderLatestMd(snapshot),
+    renderLatestMd('some-project', snapshot),
     [
-      '# xDom stat',
+      '# some-project stats',
       '## files · entries · lines · bytes',
       '| unit |  count |\n| ---- | -----: |\n| byte | 85,945 |\n| line |  2,049 |\n| file |    120 |',
       '## bytes / file',
@@ -58,19 +58,19 @@ await test('renderLatestMd lays out one table per chart pane', () => {
 
 await test('renderLatestMd keeps the decimal of a whole line ratio', () => {
   assert.ok(
-    renderLatestMd({ total: { byte: 1, file: 120, line: 2040 } }).includes(
-      '| line / file |  17.0 |\n'
-    )
+    renderLatestMd('some-project', {
+      total: { byte: 1, file: 120, line: 2040 },
+    }).includes('| line / file |  17.0 |\n')
   )
 })
 
 await test('renderLatestMd adds a trend column against the previous snapshot', () => {
   assert.equal(
-    renderLatestMd(snapshotWithDirectory, {
+    renderLatestMd('some-project', snapshotWithDirectory, {
       total: { byte: 85000, file: 121, line: 2049 },
     }),
     [
-      '# xDom stat',
+      '# some-project stats',
       '## files · entries · lines · bytes',
       '| unit  |  count |  trend |\n| ----- | -----: | -----: |\n| byte  | 85,945 | +945 ▲ |\n| line  |  2,049 |        |\n| file  |    120 |   −1 ▼ |\n| entry |    150 |        |',
       '## bytes / file',
@@ -84,17 +84,20 @@ await test('renderLatestMd adds a trend column against the previous snapshot', (
 })
 
 await test('renderLatestMd adds the entry count and per-entry ratios once directories are counted', () => {
-  const rendered = renderLatestMd(snapshotWithDirectory)
+  const rendered = renderLatestMd('some-project', snapshotWithDirectory)
   const total = rendered.split('## bytes / file')[0] ?? ''
   assert.ok(total.includes('| file  |    120 |'))
   assert.ok(total.includes('| entry |    150 |'))
   assert.ok(rendered.includes('| byte / entry |   573 |'))
   assert.ok(rendered.includes('| line / entry |  13.7 |'))
-  assert.equal(renderLatestMd(snapshot).includes('entry'), false)
+  assert.equal(
+    renderLatestMd('some-project', snapshot).includes('entry'),
+    false
+  )
 })
 
 await test('renderLatestMd sets the tally without tests beside the full one, each with its trend', () => {
-  const rendered = renderLatestMd(snapshotWithTest, {
+  const rendered = renderLatestMd('some-project', snapshotWithTest, {
     test: { byte: 900, byteAllocated: 8192, directory: 0, file: 19, line: 40 },
     total: {
       byte: 85000,
@@ -128,7 +131,7 @@ await test('renderLatestMd sets the tally without tests beside the full one, eac
 })
 
 await test('renderLatestMd leaves the trend without tests blank after a snapshot without a test tally, and has no trends without a previous snapshot', () => {
-  const rendered = renderLatestMd(snapshotWithTest, {
+  const rendered = renderLatestMd('some-project', snapshotWithTest, {
     total: {
       byte: 85000,
       byteAllocated: 487424,
@@ -142,7 +145,10 @@ await test('renderLatestMd leaves the trend without tests blank after a snapshot
     ['byte', '85,945', '+945 ▲', '85,000', '']
   )
   assert.deepEqual(
-    readMdTableCell(renderLatestMd(snapshotWithTest), '## bytes / file'),
+    readMdTableCell(
+      renderLatestMd('some-project', snapshotWithTest),
+      '## bytes / file'
+    ),
     [
       ['ratio', 'with tests', 'without tests'],
       ['byte / file', '716', '850'],
@@ -152,7 +158,7 @@ await test('renderLatestMd leaves the trend without tests blank after a snapshot
 })
 
 await test('renderLatestMd keeps a row whose count the test tally lacks, its cells without tests blank', () => {
-  const rendered = renderLatestMd({
+  const rendered = renderLatestMd('some-project', {
     test: { byte: 945, file: 20, line: 49 },
     total: snapshotWithTest.total,
   })
@@ -170,9 +176,12 @@ await test('renderLatestMd keeps a row whose count the test tally lacks, its cel
 await test('the nominal allocation reaches latest.md once measured', () => {
   const total = { ...snapshotWithDirectory.total, byteAllocated: 491520 }
   assert.ok(
-    renderLatestMd({ total }).includes(
+    renderLatestMd('some-project', { total }).includes(
       '| byte allocated (nominal 4 KiB) | 491,520 |'
     )
   )
-  assert.equal(renderLatestMd(snapshot).includes('allocated'), false)
+  assert.equal(
+    renderLatestMd('some-project', snapshot).includes('allocated'),
+    false
+  )
 })

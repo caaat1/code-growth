@@ -5,7 +5,7 @@ const labels = raw.map((r) => r.t)
 // the one every chart and table shows, and the browser remembers the pick
 // per project.
 const testToggle = document.getElementById('test')
-const TEST_STORAGE_KEY = `stats:general:${project}:test`
+const TEST_STORAGE_KEY = `code-growth:${project}:test`
 const TEST_EXCLUDED = 'excluded'
 
 const readTestIncluded = () => {

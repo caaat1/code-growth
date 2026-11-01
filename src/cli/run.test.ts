@@ -1,0 +1,138 @@
+import assert from 'node:assert/strict'
+import { existsSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
+import { mock, test } from 'node:test'
+
+import { createDir } from '../../test/helper/dir/create.js'
+import { createGitRepo } from '../../test/helper/git/repo/create.js'
+import { runGit } from '../git/run.js'
+import { collectStats } from '../stats/collect.js'
+import { readStats } from '../stats/read.js'
+import { renderStats } from '../stats/render.js'
+
+import { runCli } from './run.js'
+
+function createProject(): string {
+  return createDir({ 'package.json': '{}', 'src/a.ts': 'x\ny\n' })
+}
+
+// The lines a run prints, and its exit code.
+async function runCapturing(
+  args: readonly string[],
+  cwd: string
+): Promise<{ code: number; line: readonly string[] }> {
+  const line: string[] = []
+  const capture = (text: unknown): void => {
+    line.push(String(text))
+  }
+  const method = [
+    mock.method(console, 'error', capture),
+    mock.method(console, 'info', capture),
+    mock.method(console, 'warn', capture),
+  ]
+  const code = await runCli(args, cwd)
+  for (const each of method) {
+    each.mock.restore()
+  }
+  return { code, line }
+}
+
+await test('a bare run takes a snapshot and renders, printing the page path', async () => {
+  const rootDir = createProject()
+  const { code, line } = await runCapturing([], rootDir)
+  assert.equal(code, 0)
+  assert.equal(readdirSync(join(rootDir, 'stats/general/data')).length, 1)
+  assert.ok(existsSync(join(rootDir, 'stats/general/graph.html')))
+  assert.ok(
+    (line.at(-1) ?? '').includes(join(rootDir, 'stats/general/graph.html'))
+  )
+})
+
+await test('collect only snapshots, and render only renders', async () => {
+  const rootDir = createProject()
+  assert.equal((await runCapturing(['collect'], rootDir)).code, 0)
+  assert.equal(existsSync(join(rootDir, 'stats/general/graph.html')), false)
+  assert.equal((await runCapturing(['render'], rootDir)).code, 0)
+  assert.ok(existsSync(join(rootDir, 'stats/general/graph.html')))
+  assert.equal(readdirSync(join(rootDir, 'stats/general/data')).length, 1)
+})
+
+await test('render without snapshots warns and succeeds', async () => {
+  const { code, line } = await runCapturing(['render'], createProject())
+  assert.equal(code, 0)
+  assert.ok((line.at(-1) ?? '').includes('nothing to render'))
+})
+
+await test('check exits 0 when the page matches and 1 with what differs when it does not', async () => {
+  const rootDir = createProject()
+  await runCapturing([], rootDir)
+  assert.equal((await runCapturing(['check'], rootDir)).code, 0)
+  const other = createProject()
+  await runCapturing(['collect'], other)
+  const { code, line } = await runCapturing(['check'], other)
+  assert.equal(code, 1)
+  assert.ok(line.includes('graph/data.js holds 0 snapshot(s), data/ 1'))
+})
+
+await test('--dir keeps the stats in another folder', async () => {
+  const rootDir = createProject()
+  await runCapturing(['--dir', 'metric/size'], rootDir)
+  assert.ok(existsSync(join(rootDir, 'metric/size/graph.html')))
+  assert.equal(existsSync(join(rootDir, 'stats')), false)
+})
+
+await test('help and version print and succeed, a bad command exits 1 with why', async () => {
+  const rootDir = createProject()
+  const help = await runCapturing(['--help'], rootDir)
+  assert.equal(help.code, 0)
+  assert.ok((help.line[0] ?? '').startsWith('Usage: code-growth'))
+  const version = await runCapturing(['--version'], rootDir)
+  assert.equal(version.code, 0)
+  assert.match(version.line[0] ?? '', /^\d+\.\d+\.\d+/)
+  const bad = await runCapturing(['nonsense'], rootDir)
+  assert.equal(bad.code, 1)
+  assert.deepEqual(bad.line, ['Unknown command: nonsense'])
+})
+
+await test('a project with nothing to measure exits 1 with why', async () => {
+  const rootDir = createDir({ 'package.json': '{}' })
+  const { code, line } = await runCapturing(['collect'], rootDir)
+  assert.equal(code, 1)
+  assert.ok((line[0] ?? '').startsWith('No files match include'))
+})
+
+await test('drop takes a snapshot out, re-renders and stages the result', async () => {
+  const rootDir = createGitRepo({ 'package.json': '{}', 'src/a.ts': 'x\n' })
+  const stats = readStats(rootDir)
+  collectStats(stats, new Date('2026-09-27T15:12:31Z'))
+  collectStats(stats, new Date('2026-09-28T15:12:31Z'))
+  await renderStats(stats)
+  const dataDir = join(rootDir, 'stats/general/data')
+  const [first, second] = readdirSync(dataDir)
+  assert.ok(first !== undefined && second !== undefined)
+  runGit(rootDir, 'add', '--', 'stats', 'src', 'package.json')
+  runGit(rootDir, 'commit', '--quiet', '-m', 'Add the stats')
+
+  const { code } = await runCapturing(['drop', first], rootDir)
+
+  assert.equal(code, 0)
+  assert.deepEqual(readdirSync(dataDir), [second])
+  assert.deepEqual(
+    (await runCapturing(['check'], rootDir)).code,
+    0,
+    'the render saw the snapshot gone'
+  )
+  const staged = runGit(rootDir, 'diff', '--cached', '--name-only')
+  assert.ok(staged.includes(first), staged)
+  assert.ok(staged.includes('stats/general/graph/data.js'), staged)
+})
+
+await test('drop refuses an unknown snapshot', async () => {
+  const rootDir = createGitRepo({ 'package.json': '{}', 'src/a.ts': 'x\n' })
+  const { code, line } = await runCapturing(
+    ['drop', '2026-01-01T00-00-00.json'],
+    rootDir
+  )
+  assert.equal(code, 1)
+  assert.ok((line[0] ?? '').startsWith('No such snapshot'))
+})

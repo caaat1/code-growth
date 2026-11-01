@@ -3,7 +3,11 @@
   <head>
     <base href="./graph/" />
     <meta charset="UTF-8" />
-    <title>xDom stats</title>
+    <title>stats</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23252526'/%3E%3Cpath d='M3 12.5 6.5 9 9 10.5 13 4.5' fill='none' stroke='%239cc8eb' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
     <style>
       * {
@@ -127,14 +131,14 @@
     </style>
   </head>
   <body>
-    <!-- data.js only changes when stats:general actually runs — showing the
+    <!-- data.js only changes when the tool actually runs — showing the
         current wall clock here would read as "current as of now" on every
         reload, even the many where nothing new was collected. The last
         data point's own timestamp is the honest answer to "how fresh is
         this" — set below, once data.js has loaded. -->
     <div class="top">
       <h1>
-        <span id="project">xDom</span> / src stats — as of
+        <span id="project">…</span> / <span id="scope">…</span> stats — as of
         <span id="asOf">…</span>
       </h1>
       <!-- The tests stay in the tally until unchecked; disabled while no
@@ -229,6 +233,7 @@
       document.getElementById('asOf').textContent =
         raw.at(-1)?.t ?? 'no data yet'
       document.getElementById('project').textContent = project
+      document.getElementById('scope').textContent = scope
       document.title = `${project} stats`
     </script>
     <script src="script.js"></script>

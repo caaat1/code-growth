@@ -12,7 +12,11 @@ import { createLatestMdTable } from './table/create.js'
 import { readLatestMdTally } from './tally/read.js'
 
 /** The newest snapshot as tables, one per pane of the page. */
-export function renderLatestMd(last: Snapshot, previous?: Snapshot): string {
+export function renderLatestMd(
+  project: string,
+  last: Snapshot,
+  previous?: Snapshot
+): string {
   const tally = readLatestMdTally(last, previous)
   const table = (
     heading: LatestMdHeading,
@@ -20,7 +24,7 @@ export function renderLatestMd(last: Snapshot, previous?: Snapshot): string {
   ): string => createLatestMdTable(heading, row, tally, previous !== undefined)
   return (
     [
-      '# xDom stat',
+      `# ${project} stats`,
       '## files · entries · lines · bytes',
       table(latestMdHeadingCount, latestMdRowCount),
       '## bytes / file',
