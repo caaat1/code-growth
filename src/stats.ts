@@ -5,7 +5,7 @@ import type { StatsPath } from './stats/path.js'
 export interface Stats {
   readonly config: Config
   readonly path: StatsPath
-  /** The project's folder name, which titles the page and latest.md. */
+  /** What titles the page and latest.md: the config's, or the folder's name. */
   readonly project: string
   readonly rootDir: string
 }

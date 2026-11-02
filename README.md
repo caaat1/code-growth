@@ -13,7 +13,7 @@ Bytes, lines, files and entries (files plus folders), and the ratios between the
 It needs Node 22.17 or later and Git.
 
 ```sh
-npm install --save-dev github:caaat1/code-growth#v0.1.0
+npm install --save-dev github:caaat1/code-growth#v0.1.1
 npx code-growth
 ```
 
@@ -48,11 +48,12 @@ Without a `config.json` it measures `src/`. To change that:
   "$schema": "../../node_modules/code-growth/schema/config.json",
   "include": ["src", "lib/**/*.ts"],
   "exclude": ["src/generated"],
+  "project": "my-project",
   "test": ["**/*.test.*", "**/*.spec.*", "src/fixture"]
 }
 ```
 
-Every key is optional, and an unknown key is an error rather than silently ignored. Patterns are relative to the project root, which is the nearest folder holding a `package.json`. A bare folder takes in everything inside it. Dotfiles and dot-folders are always left out.
+Every key is optional, and an unknown key is an error rather than silently ignored. `project` is the name that titles the page, by default the project's folder name; state it if your checkouts sit in folders named differently, or each render in another one renames it. Patterns are relative to the project root, which is the nearest folder holding a `package.json`. A bare folder takes in everything inside it. Dotfiles and dot-folders are always left out.
 
 ## Commands
 

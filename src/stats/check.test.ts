@@ -50,16 +50,53 @@ await test('checkStats reports an edited latest.md and an edited page file', asy
   ])
 })
 
-await test('checkStats reports graph data naming another project or scope', async () => {
+await test('checkStats finds nothing in a checkout whose folder is named otherwise', async () => {
+  const stats = await createRenderedStats()
+  const elsewhere = { ...stats, project: 'another-folder' }
+  assert.deepEqual(await checkStats(elsewhere), [])
+})
+
+await test('checkStats holds the files to a name the config states', async () => {
+  const stats = await createRenderedStats()
+  const named = {
+    ...stats,
+    config: { ...stats.config, project: 'named' },
+    project: 'named',
+  }
+  assert.deepEqual(await checkStats(named), [
+    'graph/data.js does not name the project named',
+    'latest.md differs from the newest snapshot in data/',
+  ])
+  await renderStats(named)
+  assert.deepEqual(await checkStats(named), [])
+})
+
+await test('checkStats reports graph data naming no project', async () => {
   const stats = await createRenderedStats()
   writeFileSync(
     stats.path.graphData,
-    readFileSync(stats.path.graphData, 'utf-8')
-      .replace(`const project = "${stats.project}"`, 'const project = "other"')
-      .replace('const scope = "src"', 'const scope = "lib"')
+    readFileSync(stats.path.graphData, 'utf-8').replace(
+      `const project = "${stats.project}"\n`,
+      ''
+    )
+  )
+  assert.ok(
+    (await checkStats(stats)).includes(
+      `graph/data.js does not name the project ${stats.project}`
+    )
+  )
+})
+
+await test('checkStats reports graph data naming another scope', async () => {
+  const stats = await createRenderedStats()
+  writeFileSync(
+    stats.path.graphData,
+    readFileSync(stats.path.graphData, 'utf-8').replace(
+      'const scope = "src"',
+      'const scope = "lib"'
+    )
   )
   assert.deepEqual(await checkStats(stats), [
-    `graph/data.js does not name the project ${stats.project}`,
     'graph/data.js does not name the scope src',
   ])
 })

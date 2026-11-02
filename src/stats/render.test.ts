@@ -84,6 +84,14 @@ await test('renderStats writes every file in the style of a project with Prettie
   assert.deepEqual(await checkStats(stats), [])
 })
 
+await test('readStats takes the name the config states over the folder name', () => {
+  const rootDir = createDir({
+    'package.json': '{}',
+    'stats/general/config.json': '{ "project": "named" }',
+  })
+  assert.equal(readStats(rootDir).project, 'named')
+})
+
 await test('readStats finds the project from a folder inside it, and takes another stats folder', () => {
   const rootDir = createProject()
   const stats = readStats(join(rootDir, 'src'), 'metric/size')

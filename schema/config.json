@@ -20,6 +20,10 @@
       "items": { "type": "string" },
       "default": ["src"]
     },
+    "project": {
+      "description": "The name that titles the page and latest.md. Without one it's the project folder's, which can differ between checkouts.",
+      "type": "string"
+    },
     "test": {
       "description": "Glob patterns that pick the tests among what's measured, so the page can leave them out. A folder takes its contents with it.",
       "type": "array",

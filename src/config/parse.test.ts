@@ -22,7 +22,7 @@ await test('parseConfig fills what the file does not say from the defaults, and 
 await test('parseConfig refuses a key it does not know, naming the ones it takes', () => {
   assert.throws(
     () => parseConfig('{ "includes": ["src"] }', path),
-    /stats\/general\/config\.json: unknown key "includes"; it takes exclude, include, test/
+    /stats\/general\/config\.json: unknown key "includes"; it takes exclude, include, project, test/
   )
 })
 
@@ -34,6 +34,15 @@ await test('parseConfig refuses a value that is not a list of strings', () => {
   assert.throws(
     () => parseConfig('{ "test": [1] }', path),
     /"test" must be a list of strings/
+  )
+})
+
+await test('parseConfig takes a project name, and refuses one that is not a string', () => {
+  assert.equal(parseConfig('{ "project": "x" }', path).project, 'x')
+  assert.equal(parseConfig('{}', path).project, undefined)
+  assert.throws(
+    () => parseConfig('{ "project": ["x"] }', path),
+    /"project" must be a string/
   )
 })
 
@@ -54,6 +63,12 @@ await test('the shipped schema describes the same keys parseConfig takes', () =>
   assert.equal(schema.additionalProperties, false)
   assert.deepEqual(Object.keys(schema.properties).sort(), [
     '$schema',
-    ...Object.keys(configDefault).sort(),
+    'exclude',
+    'include',
+    'project',
+    'test',
   ])
+  for (const each of Object.keys(configDefault)) {
+    assert.ok(Object.keys(schema.properties).includes(each), each)
+  }
 })

@@ -19,17 +19,22 @@ import { renderStatsLatestMd } from './latest/md/render.js'
 /**
  * How what's rendered differs from what a render would write now, in words;
  * nothing when they match. Reads only: a new version of the tool shows up
- * here until the next render.
+ * here until the next render. Unless the config names the project, the files
+ * keep whatever name they were rendered under: it was the folder's, and a
+ * checkout in a folder named otherwise (CI's, say) has drifted from nothing.
  */
 export async function checkStats(stats: Stats): Promise<string[]> {
-  const { config, path, project, rootDir } = stats
+  const { config, path, rootDir } = stats
   const snapshotFile = readSnapshotFile(path.data)
   const graphData = readFileOrEmpty(path.graphData)
   const drift = findGraphDataDrift(
     graphData === '' ? [] : readGraphDataEntry(graphData),
     createGraphEntryList(snapshotFile)
   )
-  if (graphData !== '' && readGraphDataProject(graphData) !== project) {
+  const written = graphData === '' ? undefined : readGraphDataProject(graphData)
+  const project =
+    config.project ?? (typeof written === 'string' ? written : stats.project)
+  if (graphData !== '' && written !== project) {
     drift.push(`graph/data.js does not name the project ${project}`)
   }
   const scope = readConfigScope(config)

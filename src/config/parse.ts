@@ -3,6 +3,7 @@ import type { Config } from '../config.js'
 import { configDefault } from './default.js'
 
 const LIST_KEY = ['exclude', 'include', 'test']
+const STRING_KEY = 'project'
 
 function isStringList(value: unknown): boolean {
   return (
@@ -33,9 +34,15 @@ export function parseConfig(text: string, path: string): Config {
   }
   const { $schema: _schema, ...rest } = value as Record<string, unknown>
   for (const [key, each] of Object.entries(rest)) {
+    if (key === STRING_KEY) {
+      if (typeof each !== 'string') {
+        throw new Error(`${path}: "${key}" must be a string`)
+      }
+      continue
+    }
     if (!LIST_KEY.includes(key)) {
       throw new Error(
-        `${path}: unknown key "${key}"; it takes ${LIST_KEY.join(', ')}`
+        `${path}: unknown key "${key}"; it takes ${[...LIST_KEY, STRING_KEY].sort().join(', ')}`
       )
     }
     if (!isStringList(each)) {

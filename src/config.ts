@@ -11,6 +11,12 @@ export interface Config {
    */
   readonly include: readonly string[]
   /**
+   * The name that titles the page and latest.md. Without one it's the project
+   * folder's, which can differ between checkouts, so `check` then holds the
+   * rendered files to no particular name.
+   */
+  readonly project?: string
+  /**
    * Glob patterns to exclude on top of `include`. Dotfiles and
    * dot-directories are already skipped unconditionally (fs.globSync's own
    * `**` default). A bare directory, or a pattern ending in `/**`, also

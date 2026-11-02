@@ -1,5 +1,6 @@
 {
   "$schema": "../../schema/config.json",
   "include": ["src"],
+  "project": "code-growth",
   "test": ["**/*.test.ts"]
 }

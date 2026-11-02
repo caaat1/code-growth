@@ -14,10 +14,11 @@ import { createStatsPath } from './path/create.js'
 export function readStats(cwd: string, dir: string = statsDirDefault): Stats {
   const rootDir = findProjectRootDir(cwd)
   const path = createStatsPath(resolve(rootDir, dir))
+  const config = readConfig(path.config)
   return {
-    config: readConfig(path.config),
+    config,
     path,
-    project: basename(rootDir),
+    project: config.project ?? basename(rootDir),
     rootDir,
   }
 }

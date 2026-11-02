@@ -119,7 +119,7 @@ const raw = [
   {
     t: '11/01 14:34',
     commit:
-      "bad0e7d Cover the Recycle Bin's route through drop, and tidy for going public",
+      "fd74508 Cover the Recycle Bin's route through drop, and tidy for going public",
     withTest: {
       files: 123,
       entries: 197,
@@ -143,6 +143,34 @@ const raw = [
       bpe: 328,
       lpf: 18.8,
       lpe: 10.3,
+    },
+  },
+  {
+    t: '11/02 13:13',
+    commit: null,
+    withTest: {
+      files: 123,
+      entries: 197,
+      lines: 3450,
+      bytes: 114051,
+      bytesAllocated: 516096,
+      bpf: 927,
+      bpl: 33.1,
+      bpe: 579,
+      lpf: 28,
+      lpe: 17.5,
+    },
+    withoutTest: {
+      files: 89,
+      entries: 163,
+      lines: 1693,
+      bytes: 54334,
+      bytesAllocated: 364544,
+      bpf: 610,
+      bpl: 32.1,
+      bpe: 333,
+      lpf: 19,
+      lpe: 10.4,
     },
   },
 ]
